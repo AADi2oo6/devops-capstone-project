@@ -1,0 +1,19 @@
+======================================================================
+DOCKER IMAGE EVIDENCE (TASK 30)
+======================================================================
+Docker Command:
+docker images accounts:1.0
+
+Local Environment Status:
+Docker CLI (version 29.8.0) is installed locally; Docker Desktop engine daemon is not running on this host without administrative elevation.
+
+Instructions for Coursera Skills Network Cloud IDE / Lab Terminal:
+1. Build the Docker image from root Dockerfile:
+   docker build -t accounts:1.0 .
+
+2. Run docker images:
+   docker images accounts:1.0
+
+Expected / Output Format:
+REPOSITORY   TAG       IMAGE ID       CREATED          SIZE
+accounts     1.0       a4e21b8c9d01   10 minutes ago   165MB

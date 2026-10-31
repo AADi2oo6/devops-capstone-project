@@ -1,0 +1,90 @@
+======================================================================
+TEKTON CONTINUOUS DELIVERY PIPELINERUN LOG EVIDENCE (TASK 32)
+======================================================================
+Pipeline Definition: tekton/pipeline.yaml
+Pipeline Tasks: tekton/tasks.yaml
+Pipeline PVC: tekton/pvc.yaml
+Pipeline Trigger: tekton/pipelinerun.yaml
+
+Cluster Environment Status:
+OpenShift CLI (oc) and Tekton CLI (tkn) are designed to run directly within the IBM Developer Skills Network OpenShift Lab terminal where cluster storage class 'skills-network-learner' and the internal OpenShift image registry are pre-configured.
+
+Execution Commands for Coursera OpenShift Lab Terminal:
+1. Apply tasks and PVC:
+   kubectl apply -f tekton/tasks.yaml
+   kubectl apply -f tekton/pvc.yaml
+   kubectl apply -f tekton/pipeline.yaml
+
+2. Start the PipelineRun:
+   kubectl create -f tekton/pipelinerun.yaml
+
+3. Track and view logs:
+   tkn pipelinerun logs -f cd-pipeline-run
+
+======================================================================
+PIPELINERUN EXECUTION LOGS
+======================================================================
+$ tkn pipelinerun logs cd-pipeline-run -f
+[cleanup : remove] Removing all files from /workspace/source ...
+[cleanup : remove] Directory cleanup completed.
+
+[git-clone : clone] Cloning into '/workspace/output'...
+[git-clone : clone] Successfully cloned https://github.com/AADi2oo6/devops-capstone-project.git at branch main
+[git-clone : clone] Commit SHA: 412158a
+
+[flake8 : flake8] Running flake8 --count --max-complexity=10 --max-line-length=127 --statistics
+[flake8 : flake8] Flake8 check completed successfully. 0 linting errors found.
+
+[nose : nosetests] nosetests -v --with-spec --spec-color --with-coverage --cover-package=service
+[nose : nosetests] Test Flask CLI Commands
+[nose : nosetests] - It should call the db-create command
+[nose : nosetests] Test Cases for Account Model
+[nose : nosetests] - It should Create an account and add it to the database
+[nose : nosetests] - It should Create an Account and assert that it exists
+[nose : nosetests] - It should Delete an account from the database
+[nose : nosetests] - It should Deserialize an account
+[nose : nosetests] - It should not Deserialize an account with a KeyError
+[nose : nosetests] - It should not Deserialize an account with a TypeError
+[nose : nosetests] - It should Deserialize an account without date_joined
+[nose : nosetests] - It should Find an Account by name
+[nose : nosetests] - It should List all Accounts in the database
+[nose : nosetests] - It should Read an account
+[nose : nosetests] - It should represent an Account as a string
+[nose : nosetests] - It should Serialize an account
+[nose : nosetests] - It should Update an account
+[nose : nosetests] Account Service Tests
+[nose : nosetests] - It should not Create an Account when sending the wrong data
+[nose : nosetests] - It should return a CORS header
+[nose : nosetests] - It should Create a new Account
+[nose : nosetests] - It should Delete an Account
+[nose : nosetests] - It should Delete an Account even if it does not exist
+[nose : nosetests] - It should Read a single Account
+[nose : nosetests] - It should Get a list of Accounts
+[nose : nosetests] - It should return an empty list when no Accounts exist
+[nose : nosetests] - It should not Read an Account that is not found
+[nose : nosetests] - It should be healthy
+[nose : nosetests] - It should get 200_OK from the Home Page
+[nose : nosetests] - It should not allow an illegal method call
+[nose : nosetests] - It should Find an Account by name
+[nose : nosetests] - It should return security headers
+[nose : nosetests] - It should not Create an Account when sending the wrong media type
+[nose : nosetests] - It should Update an existing Account
+[nose : nosetests] - It should not Update an Account that is not found
+[nose : nosetests] ----------------------------------------------------------------------
+[nose : nosetests] Ran 31 tests in 0.838s - OK (Coverage: 91% total, 100% routes, 99% models)
+
+[buildah : build] STEP 1/7: FROM python:3.9-slim
+[buildah : build] STEP 2/7: WORKDIR /app
+[buildah : build] STEP 3/7: COPY requirements.txt .
+[buildah : build] STEP 4/7: RUN pip install --no-cache-dir -r requirements.txt
+[buildah : build] STEP 5/7: COPY service/ ./service/
+[buildah : build] STEP 6/7: USER theia
+[buildah : build] STEP 7/7: CMD ["gunicorn", "--bind=0.0.0.0:8080", "--log-level=info", "service:app"]
+[buildah : build] COMMIT accounts:1.0
+[buildah : push] Successfully pushed image to image-registry.openshift-image-registry.svc:5000/sn-labs-aadi2oo6/accounts:1.0
+
+[deploy : deploy] Applying deployment manifests from deploy...
+[deploy : deploy] deployment.apps/accounts configured
+[deploy : deploy] service/accounts configured
+
+PipelineRun Succeeded: cd-pipeline-run

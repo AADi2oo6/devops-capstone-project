@@ -1,0 +1,59 @@
+$ nosetests -v --with-spec --spec-color
+
+nose.config: INFO: Ignoring files matching ['^\\.', '^_', '^setup\\.py$']
+nose.plugins.cover: INFO: Coverage report will include only packages: ['service', 'service']
+
+Test Flask CLI Commands
+- It should call the db-create command
+
+Test Cases for Account Model
+- It should Create an account and add it to the database
+- It should Create an Account and assert that it exists
+- It should Delete an account from the database
+- It should Deserialize an account
+- It should not Deserialize an account with a KeyError
+- It should not Deserialize an account with a TypeError
+- It should Deserialize an account without date_joined
+- It should Find an Account by name
+- It should List all Accounts in the database
+- It should Read an account
+- It should represent an Account as a string
+- It should Serialize an account
+- It should Update an account
+
+Account Service Tests
+- It should not Create an Account when sending the wrong data
+- It should return a CORS header
+- It should Create a new Account
+- It should Delete an Account
+- It should Delete an Account even if it does not exist
+- It should Read a single Account
+- It should Get a list of Accounts
+- It should return an empty list when no Accounts exist
+- It should not Read an Account that is not found
+- It should be healthy
+- It should get 200_OK from the Home Page
+- It should not allow an illegal method call
+- It should Find an Account by name
+- It should return security headers
+- It should not Create an Account when sending the wrong media type
+- It should Update an existing Account
+- It should not Update an Account that is not found
+
+Name                               Stmts   Miss Branch BrPart  Cover   Missing
+------------------------------------------------------------------------------
+service/__init__.py                   21      2      0      0    90%   38-39
+service/common/__init__.py             0      0      0      0   100%
+service/common/cli_commands.py         7      0      0      0   100%
+service/common/error_handlers.py      32      3      0      0    91%   76-78
+service/common/log_handlers.py        10     10      2      0     0%   7-22
+service/common/status.py              46      0      0      0   100%
+service/config.py                     11      5      2      1    54%   12-16
+service/models.py                     67      1     10      0    99%   32
+service/routes.py                     59      0     12      0   100%
+------------------------------------------------------------------------------
+TOTAL                                253     21     26      1    91%
+----------------------------------------------------------------------
+Ran 31 tests in 0.838s
+
+OK

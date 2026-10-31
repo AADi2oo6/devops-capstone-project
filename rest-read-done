@@ -1,0 +1,16 @@
+$ curl -i -X GET http://127.0.0.1:8080/accounts/1
+
+HTTP/1.0 200 OK
+Server: Werkzeug/3.1.3 Python/3.13.14
+Date: Sat, 31 Oct 2026 06:59:40 GMT
+Content-Type: application/json
+Content-Length: 146
+Access-Control-Allow-Origin: *
+Permissions-Policy: browsing-topics=()
+X-Frame-Options: SAMEORIGIN
+X-Content-Type-Options: nosniff
+Content-Security-Policy: default-src 'self'; object-src 'none'
+Referrer-Policy: strict-origin-when-cross-origin
+Connection: close
+
+{"address":"Pune, Maharashtra","date_joined":"2026-10-31","email":"aditya@example.com","id":1,"name":"Aditya Sharma","phone_number":"9876543210"}
