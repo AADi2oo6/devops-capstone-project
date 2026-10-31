@@ -1,133 +1,95 @@
-# DevOps Capstone Template
+# DevOps Capstone Project
 
+[![CI Build](https://github.com/AADi2oo6/devops-capstone-project/actions/workflows/ci-build.yaml/badge.svg)](https://github.com/AADi2oo6/devops-capstone-project/actions/workflows/ci-build.yaml)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python 3.9](https://img.shields.io/badge/Python-3.9-green.svg)](https://shields.io/)
 
-This repository contains the starter code for the project in [**IBM-CD0285EN-SkillsNetwork DevOps Capstone Project**](https://www.coursera.org/learn/devops-capstone-project?specialization=devops-and-software-engineering) which is part of the [**IBM DevOps and Software Engineering Professional Certificate**](https://www.coursera.org/professional-certificates/devops-and-software-engineering)
+This repository contains the complete implementation for the **IBM DevOps Capstone Project**, which is part of the **IBM DevOps and Software Engineering Professional Certificate**.
 
-## Usage
+## Project Overview
 
-You should use this template to start your DevOps Capstone project. It contains all of the code that you will need to get started.
+The **Customer Accounts Microservice** provides a complete, production-ready RESTful service managing the lifecycle of customer accounts. The project demonstrates an end-to-end DevOps lifecycle including Agile planning, Test-Driven Development (TDD), continuous integration (CI), containerization, security hardening, continuous delivery (CD) pipelines, and Kubernetes deployment.
 
-Do Not fork this code! It is meant to be used by pressing the  <span style=color:white;background:green>**Use this Template**</span> button in GitHub. This will copy the code to your own repository with no connection back to the original repository like a fork would. This is what you want.
+## Architecture and Key Technologies
 
-## Development Environment
+* **Flask REST API:** Built with Python 3.9 and Flask, implementing RESTful endpoints for Account lifecycle management (`POST /accounts`, `GET /accounts`, `GET /accounts/<id>`, `PUT /accounts/<id>`, `DELETE /accounts/<id>`).
+* **PostgreSQL & SQLAlchemy:** Relational persistence layer using Flask-SQLAlchemy with support for querying accounts by name and full serialization/deserialization.
+* **Agile Planning & Kanban:** Managed through GitHub Projects and GitHub Issues with standard User Story templates, 3-sprint iterations, story point estimation (Fibonacci), and label categorization (`Technical Debt`, `Enhancement`).
+* **Test Driven Development (TDD) & Unit Testing:** Comprehensive unit tests built with `unittest`, `factory-boy`, and `nose` achieving over the 95% code coverage target.
+* **Code Quality & Linting:** Automated static analysis and linting with `flake8` and `pylint` conforming to strict code quality and complexity standards.
+* **Application Security:**
+  * **Flask-Talisman:** Enforces secure HTTP headers including `X-Frame-Options`, `X-Content-Type-Options`, `Content-Security-Policy`, and `Referrer-Policy`.
+  * **Flask-Cors:** Cross-Origin Resource Sharing (CORS) integration allowing authorized frontend consumption.
+* **Continuous Integration (CI):** GitHub Actions workflow running on Ubuntu with automated PostgreSQL service container, dependency caching, Flake8 linting, and Nose testing with coverage reporting.
+* **Docker Containerization:** Optimized multi-stage/slim Docker container running Gunicorn as a non-root user on port 8080.
+* **Kubernetes & OpenShift Deployment:** Declarative Kubernetes deployment manifests and cluster services exposing the accounts microservice with liveness and readiness health checks.
+* **Tekton Continuous Delivery (CD):** Tekton pipeline automating cleanup, git-clone, flake8 linting, nose testing, buildah image creation, and automated cluster deployment using shared persistent volume claims (PVC).
 
-These labs are designed to be executed in the IBM Developer Skills Network Cloud IDE with OpenShift. Please use the links provided in the Coursera Capstone project to access the lab environment.
+## REST API Endpoints
 
-Once you are in the lab environment, you can initialize it with `bin/setup.sh` by sourcing it. (*Note: DO NOT run this program as a bash script. It sets environment variable and so must be sourced*):
+| Method | Endpoint | Description | Status Code |
+|---|---|---|---|
+| `GET` | `/` | Root service metadata and discovery | `200 OK` |
+| `GET` | `/health` | Service health status | `200 OK` |
+| `POST` | `/accounts` | Create a new customer account | `201 Created` |
+| `GET` | `/accounts` | List all accounts (supports `?name=` query) | `200 OK` |
+| `GET` | `/accounts/<id>` | Read an account by ID | `200 OK` / `404 Not Found` |
+| `PUT` | `/accounts/<id>` | Update an existing account | `200 OK` / `404 Not Found` |
+| `DELETE` | `/accounts/<id>` | Delete an account by ID | `204 No Content` |
 
-```bash
-source bin/setup.sh
-```
-
-This will install Python 3.9, make it the default, modify the bash prompt, create a Python virtual environment and activate it.
-
-After sourcing it you prompt should look like this:
-
-```bash
-(venv) theia:project$
-```
-
-## Useful commands
-
-Under normal circumstances you should not have to run these commands. They are performed automatically at setup but may be useful when things go wrong:
-
-### Activate the Python 3.9 virtual environment
-
-You can activate the Python 3.9 environment with:
-
-```bash
-source ~/venv/bin/activate
-```
-
-### Installing Python dependencies
-
-These dependencies are installed as part of the setup process but should you need to install them again, first make sure that the Python 3.9 virtual environment is activated and then use the `make install` command:
-
-```bash
-make install
-```
-
-### Starting the Postgres Docker container
-
-The labs use Postgres running in a Docker container. If for some reason the service is not available you can start it with:
-
-```bash
-make db
-```
-
-You can use the `docker ps` command to make sure that postgres is up and running.
-
-## Project layout
-
-The code for the microservice is contained in the `service` package. All of the test are in the `tests` folder. The code follows the **Model-View-Controller** pattern with all of the database code and business logic in the model (`models.py`), and all of the RESTful routing on the controller (`routes.py`).
+## Project Structure
 
 ```text
-├── service         <- microservice package
-│   ├── common/     <- common log and error handlers
-│   ├── config.py   <- Flask configuration object
-│   ├── models.py   <- code for the persistent model
-│   └── routes.py   <- code for the REST API routes
-├── setup.cfg       <- tools setup config
-└── tests                       <- folder for all of the tests
-    ├── factories.py            <- test factories
-    ├── test_cli_commands.py    <- CLI tests
-    ├── test_models.py          <- model unit tests
-    └── test_routes.py          <- route unit tests
+.
+├── .github/
+│   ├── ISSUE_TEMPLATE/
+│   │   └── user-story.md     <- Standard user story template
+│   └── workflows/
+│       └── ci-build.yaml     <- GitHub Actions CI pipeline
+├── deploy/
+│   ├── deployment.yaml       <- Kubernetes Deployment manifest
+│   └── service.yaml          <- Kubernetes Service manifest
+├── service/
+│   ├── common/               <- CLI, error handlers, status codes
+│   ├── config.py             <- Database and app config
+│   ├── models.py             <- Account SQLAlchemy persistent model
+│   ├── routes.py             <- REST API routing and controllers
+│   └── __init__.py           <- Flask app setup with Talisman and CORS
+├── tekton/
+│   ├── pipeline.yaml         <- Tekton CD pipeline
+│   ├── pipelinerun.yaml      <- Pipeline execution trigger
+│   ├── pvc.yaml              <- PersistentVolumeClaim definition
+│   └── tasks.yaml            <- Custom Tekton task definitions
+├── tests/
+│   ├── factories.py          <- FactoryBoy account generator
+│   ├── test_cli_commands.py  <- CLI unit tests
+│   ├── test_models.py        <- Account model unit tests
+│   └── test_routes.py        <- Account REST API and security tests
+├── Dockerfile                <- Container image specification
+├── Makefile                  <- Developer convenience commands
+├── requirements.txt          <- Pinned project dependencies
+└── setup.cfg                 <- Nose, Flake8, Coverage, and Pylint configuration
 ```
 
-## Data Model
+## Running Locally
 
-The Account model contains the following fields:
+1. **Activate virtual environment & install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-| Name | Type | Optional |
-|------|------|----------|
-| id | Integer| False |
-| name | String(64) | False |
-| email | String(64) | False |
-| address | String(256) | False |
-| phone_number | String(32) | True |
-| date_joined | Date | False |
+2. **Run tests with Nose and Coverage:**
+   ```bash
+   nosetests -v --with-spec --spec-color --with-coverage --cover-package=service
+   ```
 
-## Your Task
+3. **Run code linting:**
+   ```bash
+   flake8 . --count --max-complexity=10 --max-line-length=127 --statistics
+   pylint service
+   ```
 
-Complete this microservice by implementing REST API's for `READ`, `UPDATE`, `DELETE`, and `LIST` while maintaining **95%** code coverage. In true **Test Driven Development** fashion, first write tests for the code you "wish you had", and then write the code to make them pass.
-
-## Local Kubernetes Development
-
-This repo can also be used for local Kubernetes development. It is not advised that you run these commands in the Cloud IDE environment. The purpose of these commands are to simulate the Cloud IDE environment locally on your computer. 
-
-At a minimum, you will need [Docker Desktop](https://www.docker.com/products/docker-desktop) installed on your computer. For the full development environment, you will also need [Visual Studio Code](https://code.visualstudio.com) with the [Remote Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension from the Visual Studio Marketplace. All of these can be installed manually by clicking on the links above or you can use a package manager like **Homebrew** on Mac of **Chocolatey** on Windows.
-
-Please only use these commands for working stand-alone on your own computer with the VSCode Remote Container environment provided.
-
-1. Bring up a local K3D Kubernetes cluster
-
-    ```bash
-    $ make cluster
-    ```
-
-2. Install Tekton
-
-    ```bash
-    $ make tekton
-    ```
-
-3. Install the ClusterTasks that the Cloud IDE has
-
-    ```bash
-    $ make clustertasks
-    ```
-
-You can now perform Tekton development locally, just like in the Cloud IDE lab environment.
-
-## Author
-
-[John Rofrano](https://www.coursera.org/instructor/johnrofrano), Senior Technical Staff Member, DevOps Champion, @ IBM Research, and Instructor @ Coursera
-
-## License
-
-Licensed under the Apache License. See [LICENSE](LICENSE)
-
-## <h3 align="center"> © IBM Corporation 2022. All rights reserved. <h3/>
+4. **Start the service:**
+   ```bash
+   gunicorn --bind=0.0.0.0:8080 service:app
+   ```
