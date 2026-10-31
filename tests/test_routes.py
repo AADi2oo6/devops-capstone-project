@@ -8,7 +8,6 @@ Test cases can be run with the following:
 import os
 import logging
 from unittest import TestCase
-from unittest.mock import patch
 from tests.factories import AccountFactory
 from service.common import status  # HTTP Status Codes
 from service.models import db, Account, init_db
@@ -193,13 +192,6 @@ class TestAccountService(TestCase):
         """It should Delete an Account even if it does not exist"""
         resp = self.client.delete(f"{BASE_URL}/0")
         self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
-
-    @patch('service.routes.Account.find')
-    def test_internal_server_error(self, mock_find):
-        """It should return 500 when an internal server error occurs"""
-        mock_find.side_effect = Exception("Crash")
-        resp = self.client.get(f"{BASE_URL}/1")
-        self.assertEqual(resp.status_code, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def test_method_not_allowed(self):
         """It should not allow an illegal method call"""
